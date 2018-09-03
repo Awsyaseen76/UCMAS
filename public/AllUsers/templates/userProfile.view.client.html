@@ -1,0 +1,218 @@
+
+
+<!-- Navigation -->
+    <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark fixed-top">
+      <div class="container">
+        <a class="navbar-brand" href="index.html"><img class="menu-logo" src="./img/logo/ucmas-logo.jpg"> </a>
+        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="#!/">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#!/allEvents">Events</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#!/login" ng-show="!model.loggedUser">Login</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="" ng-click="model.logout()" ng-show="model.loggedUser">Logout</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-warning" href="#!/profile" ng-show="model.loggedUser">Profile</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#!/about">About</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#!/contact">Contact</a>
+            </li>            
+          </ul>
+        </div>
+      </div>
+    </nav>
+<!-- /Navigation -->
+
+
+
+<!--  -->
+
+<div class="container aws-margin10">
+	<div class="jumbotron" >
+		<!-- static picture -->
+		<!-- <img class="mx-auto d-block profile-img"  ng-src="{{model.userProfile.profileImage}}" > -->
+		
+		<!-- uploaded image by user -->
+		<!-- <img ng-src="../../img/profileImages/{{model.userProfile.profileImage.filename}}" class="mx-auto d-block profile-img"> -->
+		<img ng-src="{{model.userProfile.profileImage.location}}" class="mx-auto d-block profile-img">
+		
+		<a class="btn btn-warning" href="#!/updateUserProfile">Update profile</a>
+
+
+
+		<!-- <h5>Update profile image: </h5>
+		<p>Note: The uploaded picture should be less than 1 mg and with the following extension (jpeg, jpg, png, gif)</p>
+		<div class="alert alert-danger" role="alert" ng-show="model.userProfile.profileImage.size > 1000000">
+  			The uploaded picture should be less than 1MB.
+		</div> -->
+
+		<!-- <form action="/api/userProfile/uploadProfilePic" method="POST" enctype="multipart/form-data" class="col-sm-6">
+			<input type="file" name="profilePicture" id="profilePicture" class="form-control" onchange="ValidateSize(this)">
+			<script type="text/javascript">
+				function ValidateSize(file) {
+	        		var FileSize = file.files[0].size / 1024 / 1024; // in MB
+	        		if (FileSize > 1) {
+	            		alert('File size exceeds 1 MB');
+	            		return false;
+	        		} 
+	        		// else {
+	        		// 	alert(file.files[0].size);
+	        		// 	return true;
+	        		// }
+    			}
+			</script>
+			<input type="submit" name="uploadImage" class="form-control" >
+		</form>
+ -->
+
+
+		<br>
+		<hr>
+
+
+		<h1 class="display-3">Profile details:</h1>
+		<hr class="my-4">
+
+		<div class="row">
+			<div class="col-md-6">
+				<ul class="list-group list-group-flush">
+					<li class="list-group-item"> <b>Name: </b> {{model.userProfile.name.firstName}} {{model.userProfile.name.middleName}} {{model.userProfile.name.lastName}}</li>
+					<li class="list-group-item"> <b>Email: </b> {{model.userProfile.email}}</li>
+					<li class="list-group-item"> <b>Gender: </b> {{model.userProfile.gender}}</li>
+					<li class="list-group-item"> <b>Address: </b> {{model.userProfile.address}}</li>
+					<li class="list-group-item"> <b>DOB: </b>{{model.userProfile.DOB |date}} </li>
+					<li class="list-group-item"> <b>Grade: </b>{{model.userProfile.grade}}</li>
+					<li class="list-group-item"> <b>School: </b>{{model.userProfile.school}}</li>
+				</ul>
+			</div>
+			<div class="col-md-6">
+				<li class="list-group-item"> <h4> Contact details:</h4></li>
+				<li class="list-group-item"> <b>Father: </b>{{model.userProfile.contact.father.name}} - <b>Phone: </b>{{model.userProfile.contact.father.phone}}</li>
+				<!-- <li class="list-group-item"> <b>     Phone: </b>{{model.userProfile.contact.father.phone}}</li> -->
+				<li class="list-group-item"> <b>     Mother: </b>{{model.userProfile.contact.mother.name}} - <b>     Phone: </b>{{model.userProfile.contact.mother.phone}}</li>
+				<!-- <li class="list-group-item"> <b>     Phone: </b>{{model.userProfile.contact.mother.phone}}</li> -->
+				<li class="list-group-item"> <b>     Emergency: </b>{{model.userProfile.contact.emergency.name}} - <b>     Phone: </b>{{model.userProfile.contact.emergency.phone}}</li>
+				<!-- <li class="list-group-item"> <b>     Phone: </b>{{model.userProfile.contact.emergency.phone}}</li> -->
+			</div>
+		</div>
+			
+<br><br>
+
+		<div class="row">
+			<div class="col-md-12">
+				<li class="list-group-item"> <b> Medical issues: </b>{{model.userProfile.medical.medicalIssues}}</li>
+				<li class="list-group-item"> <b> Medical details: </b>{{model.userProfile.medical.problemDetails}}</li>
+				<li class="list-group-item"> <b> Notes: </b> {{model.userProfile.notes}}</li>
+			</div>
+		</div>
+			
+
+		<br><br>
+		<div class="row">
+			<div class="col-md-12">
+				<h4>Registered Events:</h4>
+					<hr>
+					<div class="container">
+
+						<!-- upcomming progrma -->
+						<!-- <div class="row mb-1" ng-show="model.upcommingProgram.length > 0"> -->
+						<h2>Upcomming Program:</h2>
+						<div class="row mb-1" ng-show="model.upcommingProgram.length > 0" ng-repeat="program in model.upcommingProgram">
+					        <div class="col-md-12">
+					          <div class="card flex-md-row mb-4 box-shadow h-md-250">
+					            <div class="card-body d-flex flex-column align-items-start">
+					              <h3 class="d-inline-block mb-2 text-warning">{{program.event}}:</h3>
+					              <h5 class="mb-0">{{program.programDetails.title}}</h5>
+					              <div class="mb-1 text-muted">{{program.date | date}}</div>
+					              <p class="card-text mb-auto">
+					              	{{program.programDetails.details}}
+					              </p>
+						        </div>
+					            
+					            <div class="video-container">
+					            	<iframe width="400px;" height="100%" ng-src="{{model.trustedUrl(program.programDetails.videoLink)}}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+					            </div>
+					          </div>
+					        </div>
+      					</div>
+						<!-- /upcomming progrma -->
+
+
+						<div class="row">
+							<div class="card border-success col-xl-4 aws-margin10" ng-repeat='event in model.userProfile.registeredEventsList' style="max-width: 20rem;">
+							  <div class="card-header text-danger"><h3>{{event.name}}</h3></div>
+							  <div class="card-body">
+							    <p class="card-title"><b>Category: </b>{{event.category}}</p>
+							    <p class="card-title"><b>Starting date: </b>{{event.startingDate | date}}</p>
+							    <p class="card-title"><b>Ending date: </b>{{event.expiryDate | date}}</p>
+							    <p class="card-title"><b>Payments: </b>{{model.totalPayments(event._id, event.price).totals | currency:"JOD "}}</p>
+							    <p class="card-title"><b>Balance: </b>{{model.totalPayments(event._id, event.price).balance | currency:"JOD "}}</p>
+							    <p class="card-title"><b>Attended Days: </b>{{model.attendedDays(event._id).attended}}</p>
+							    <p class="card-title"><b>Missed Days: </b>{{model.attendedDays(event._id).missed}}</p>
+							    
+							    <!-- <a href="" ng-click="model.removeRegisteredEvent(event._id)" class=" btn btn-default pull-right">Remove...</a> -->
+							  </div>
+							</div>
+						</div>
+
+
+						<!-- Feedback -->
+						<div>
+						<div class="row" style="margin-top: 50px; border: solid; border-width: 5px; border-color: lightgrey;  border-radius: 25px; padding: 20px;">
+							<div class="col-sm-12">
+								<h3 class="text-success">Give us a feedback:</h3>
+							</div>
+							<div class="col-sm-6" style="margin: 5px;">
+								<select ng-model="selectedEvent" class="custom-select" ng-options="event.name for event in model.registeredEventsList">
+									<option value="" disabled >Select event...</option>
+								</select>
+							</div>
+							<div class="col-sm-10" style="margin: 5px;">
+								<textarea name="feedback" class="form-control" ng-model="feedbackText"></textarea>
+							</div>
+							<div class="col-sm-4" style="margin: 5px;">
+								<a class="btn btn-success form-control" ng-click="model.submitFeedback(selectedEvent._id, selectedEvent.name, feedbackText)">Submit</a>
+							</div>
+							<div class="col-sm-12" style="margin-top: 50px;">
+								<h4 class="text-success">Your feedbacks:</h4>
+									<table class="table table-hover">
+									  <thead>
+									    <tr>
+									      <th width="20%">Date</th>
+									      <th width="20%">Event name</th>
+									      <th width="60%">Feedback</th>
+									    </tr>
+									  </thead>
+									  <tbody>
+									    <tr ng-repeat="feed in model.userFeedbacks">
+									      <td>{{feed.date | date}}</td>
+									      <td>{{feed.eventName}}</td>
+									      <td>{{feed.feedback}}</td>
+									    </tr>
+									  </tbody>
+									</table>
+							</div>
+						</div>
+						<!-- </div> -->
+						<!-- /Feedback -->
+					</div>
+			</div>
+		</div>
+	</div>
+</div>	  	
+
+
+

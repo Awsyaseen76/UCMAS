@@ -1,15 +1,16 @@
 
 <!-- Navigation -->
-    <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <!-- <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark fixed-top"> -->
+    <nav class="navbar fixed-top navbar-expand-lg fixed-top" style="background-color: gold;">
       <div class="container">
-        <!-- <a class="navbar-brand" href="index.html"><img class="menu-logo" src="./img/logo/joeLogo.png"> </a> -->
+        <a class="navbar-brand" href="index.html"><img class="menu-logo" src="./img/logo/ucmas-logo.jpg"> </a>
         <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav ml-auto">
             <li class="nav-item">
-              <a class="nav-link text-warning" href="#!/">Home</a>
+              <a class="nav-link text-success" href="#!/">Home</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="#!/allLevels">Levels</a>
@@ -56,13 +57,13 @@
           <div class="carousel-item active" style="background-image: url('http://www.elementalsports.nl/wp-content/uploads/2016/11/kidsplaying-1920x1080.jpg')">
             <div class="carousel-caption d-none d-md-block">
               <h3>Fun with freinds</h3>
-              <p>The most smart course in jordan.</p>
+              <p>The most favourite camps in jordan.</p>
             </div>
           </div>
           <div class="carousel-item" style="background-image: url('http://www.elementalsports.nl/wp-content/uploads/2016/11/palaimaxoi-back-1900x1080.jpg')">
             <div class="carousel-caption d-none d-md-block">
               <h3>Activity</h3>
-              <p>Be the champion of the world</p>
+              <p>Best football programs</p>
             </div>
           </div>
           <div class="carousel-item" style="background-image: url('https://www.secureshop.gr/POOL/fourseasons/booking_manager/images/articles/ART777114568594772185122512380_small.jpg')">
@@ -103,7 +104,7 @@
           <h2>Special event...</h2>
           <h2 ng-cloak>{{model.specialEvent.name}}</h2>
           <p ng-cloak>{{model.specialEvent.details}}</p>
-          <a href="#!/allEvents/{{model.specialEvent._id}}">More details...</a>
+          <a href="#!/allLevels/{{model.specialEvent._id}}">More details...</a>
         </div>
       </div>
       <!-- /Special event -->
@@ -123,12 +124,12 @@
               <p class="card-text" ng-cloak>to: {{event.expiryDate | date}}</p>
             </div>
             <div class="card-footer">
-              <a href="#!/allEvents/{{event._id}}">More details...</a>
+              <a href="#!/allLevels/{{event._id}}">More details...</a>
             </div>
           </div>
         </div>
       </div>
-      <!-- /Available Events -->
+      <!-- /Available Levels -->
 
       <br>
       <br>

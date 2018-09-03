@@ -1,0 +1,71 @@
+
+
+<!-- Navigation -->
+    <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark fixed-top">
+      <div class="container">
+        <a class="navbar-brand" href="index.html"><img class="menu-logo" src="./img/logo/ucmas-logo.jpg"> </a>
+        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="#!/">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-warning" href="#!/allEvents">Events</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#!/login" ng-show="!model.loggedUser">Login</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="" ng-click="model.logout()" ng-show="model.loggedUser">Logout</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#!/profile" ng-show="model.loggedUser">Profile</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#!/about">About</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#!/contact">Contact</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+<!-- /Navigation -->
+
+
+
+
+
+
+<!-- ng-show="model.dateCompare(event.startingDate)" -->
+
+
+<div class="container aws-margin10">
+  <label for="searchByName">Filter by name: <input type="text" name="searchByName" ng-model="searchByName"> </label>
+  <h1>All available events</h1>
+	<hr class="my-3">
+	<div class="container">
+		<div class="row">
+			<!-- <div class="card border-success col-xl-4 aws-margin0" ng-repeat='event in model.eventsList | orderBy:"-startingDate"' style="max-width: 20rem;"> -->
+			<div class="card border-success col-xl-4 aws-margin0" ng-repeat="event in model.eventsList | filter:{approved: true} | filter:searchByName" style="max-width: 20rem;">
+			  <div class="card-header text-danger"><h3>{{event.name}}</h3></div>
+			  <div class="card-body">
+			    <h5 class="card-title">Category: {{event.category}}</h5>
+			    <h5 class="card-title">Sub-Category: {{event.subcategory}}</h5>
+			    <p class="card-text">Starting Date: {{event.startingDate | date}}</p>
+			    <p class="card-text">End Date: {{event.expiryDate | date}}</p>
+          <p class="card-text">Address: {{event.address}}</p>
+			    <a href="#!/allEvents/{{event._id}}" class=" btn btn-default pull-right">More details...</a>
+			  </div>
+			</div>
+		</div>
+	</div>
+
+
+  <!-- Map div -->
+  <div class="map" id="mapContainer"></div>
+</div>
