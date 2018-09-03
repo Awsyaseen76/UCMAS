@@ -9,3 +9,4 @@ create the bone of the project:
 [] create the routing
 [x] connecting the DB
 [] deploy on heroku
+[] test register
