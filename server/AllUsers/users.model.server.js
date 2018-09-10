@@ -10,11 +10,11 @@ usersDB.loginUser = loginUser;
 usersDB.getAllUsers = getAllUsers;
 usersDB.findUserById = findUserById;
 usersDB.findUserByEmail = findUserByEmail;
-usersDB.addEventId = addEventId;
-usersDB.removeEventFromList = removeEventFromList;
+usersDB.addCourseId = addCourseId;
+usersDB.removeCourseFromList = removeCourseFromList;
 usersDB.findUserByGoogleId = findUserByGoogleId;
-usersDB.addEventToUserEventsList = addEventToUserEventsList;
-usersDB.removeRegisteredEvent = removeRegisteredEvent;
+usersDB.addCourseToUserCoursesList = addCourseToUserCoursesList;
+usersDB.removeRegisteredCourse = removeRegisteredCourse;
 usersDB.addProfileImage = addProfileImage;
 usersDB.addTokenToUser = addTokenToUser;
 usersDB.findUserByToken = findUserByToken;
@@ -23,7 +23,7 @@ usersDB.updateProfile = updateProfile;
 usersDB.makePayment = makePayment;
 usersDB.confirmAttendance = confirmAttendance;
 usersDB.submitFeedback = submitFeedback;
-usersDB.updateUserEventParameters = updateUserEventParameters;
+usersDB.updateUserCourseParameters = updateUserCourseParameters;
 usersDB.freezeMembership = freezeMembership;
 usersDB.removeFrozeDays = removeFrozeDays;
 usersDB.getAllFeedbacks = getAllFeedbacks;
@@ -36,11 +36,11 @@ function updateFeedbackByAdmin(feedback){
 			.findById(userId)
 			.then(function(user){
 				// console.log(user);
-				for(var i in user.userEventParameters){
-					for(var j in user.userEventParameters[i].feedbacks){
-						// for(var f in user.userEventParameters[i].feedbacks){
-							if(user.userEventParameters[i].feedbacks[j].eventName === feedback.eventName && user.userEventParameters[i].feedbacks[j].feedback === feedback.feedback){
-								user.userEventParameters[i].feedbacks[j].approved = feedback.approved;
+				for(var i in user.userCourseParameters){
+					for(var j in user.userCourseParameters[i].feedbacks){
+						// for(var f in user.userCourseParameters[i].feedbacks){
+							if(user.userCourseParameters[i].feedbacks[j].courseName === feedback.courseName && user.userCourseParameters[i].feedbacks[j].feedback === feedback.feedback){
+								user.userCourseParameters[i].feedbacks[j].approved = feedback.approved;
 								return user.save();
 							}
 						// }
@@ -61,13 +61,13 @@ function getAllFeedbacks(){
 
 function removeFrozeDays(ids){
 	var userId = ids.userId;
-	var originalEventId = ids.originalEventId;
+	var originalCourseId = ids.originalCourseId;
 	return usersDB
 				.findById(userId)
 				.then(function(user){
-					for(var i in user.userEventParameters){
-						if(user.userEventParameters[i].eventId === originalEventId){
-							user.userEventParameters[i].freezeDays.splice(0, user.userEventParameters[i].freezeDays.length);
+					for(var i in user.userCourseParameters){
+						if(user.userCourseParameters[i].courseId === originalCourseId){
+							user.userCourseParameters[i].freezeDays.splice(0, user.userCourseParameters[i].freezeDays.length);
 							return user.save();
 						}
 					}
@@ -77,35 +77,35 @@ function removeFrozeDays(ids){
 
 function freezeMembership(freezeObject){
 	var userId = freezeObject.userId;
-	var eventId = freezeObject.eventId;
+	var courseId = freezeObject.courseId;
 	var days = freezeObject.days;
 	return usersDB
 				.findById(userId)
 				.then(function(user){
-					for(var p in user.userEventParameters){
-						if(user.userEventParameters[p].eventId === eventId){
-							user.userEventParameters[p].freezeDays = days;
+					for(var p in user.userCourseParameters){
+						if(user.userCourseParameters[p].courseId === courseId){
+							user.userCourseParameters[p].freezeDays = days;
 							return user.save();
 						}
 					}
 				});
 }
 
-function updateUserEventParameters(discount){
+function updateUserCourseParameters(discount){
 	var userId = discount.userId;
-	var eventId = discount.eventId;
+	var courseId = discount.courseId;
 	return usersDB
 				.findById(userId)
 				.then(function (user){
-					for(var e in user.userEventParameters){
-						if(user.userEventParameters[e].eventId === eventId){
-							if(user.userEventParameters[e].discountType === ''){
-							 	user.userEventParameters[e].discountType = discount.discountType;
-							 	user.userEventParameters[e].discountTag = discount.discountTag;
-							 	user.userEventParameters[e].percentage = discount.percentage;
-							 	user.userEventParameters[e].discountedEventPrice = discount.discountedEventPrice;
-							 	user.userEventParameters[e].normalEventPrice = discount.normalEventPrice;
-							 	user.userEventParameters[e].eventDays = discount.eventDays;
+					for(var e in user.userCourseParameters){
+						if(user.userCourseParameters[e].courseId === courseId){
+							if(user.userCourseParameters[e].discountType === ''){
+							 	user.userCourseParameters[e].discountType = discount.discountType;
+							 	user.userCourseParameters[e].discountTag = discount.discountTag;
+							 	user.userCourseParameters[e].percentage = discount.percentage;
+							 	user.userCourseParameters[e].discountedCoursePrice = discount.discountedCoursePrice;
+							 	user.userCourseParameters[e].normalCoursePrice = discount.normalCoursePrice;
+							 	user.userCourseParameters[e].courseDays = discount.courseDays;
 							 	return user.save();								
 							}else{
 								var err = 'You Already had a discount!';
@@ -119,17 +119,17 @@ function updateUserEventParameters(discount){
 
 function submitFeedback(feedbackObject){
 	var userId = feedbackObject.userId;
-	var eventId = feedbackObject.eventId;
+	var courseId = feedbackObject.courseId;
 	var feedDate = new Date();
-	// var feedbackObject = {userId: model.loggedUser._id, eventId: eventId, eventName: eventName, feedbackText: feedbackText};
-	var feed = {date: feedDate, eventName: feedbackObject.eventName, feedback: feedbackObject.feedbackText, userId: userId, approved: false};
+	// var feedbackObject = {userId: model.loggedUser._id, courseId: courseId, courseName: courseName, feedbackText: feedbackText};
+	var feed = {date: feedDate, courseName: feedbackObject.courseName, feedback: feedbackObject.feedbackText, userId: userId, approved: false};
 	return usersDB
 		.findById(userId)
 		.then(function(user){
 			// user.userFeedback.push(feedbackObject);
-			for(var i in user.userEventParameters){
-				if(user.userEventParameters[i].eventId === eventId){
-					user.userEventParameters[i].feedbacks.push(feed);
+			for(var i in user.userCourseParameters){
+				if(user.userCourseParameters[i].courseId === courseId){
+					user.userCourseParameters[i].feedbacks.push(feed);
 				}
 			}
 			return user.save();
@@ -141,22 +141,22 @@ function confirmAttendance(attendedUser){
 	return usersDB
 		.findById(attendedUser.userId)
 		.then(function(user){
-			// loop the userEventParameters
-			for(var i in user.userEventParameters){
-				if(user.userEventParameters[i].eventId === attendedUser.eventId){
-					for(var j in user.userEventParameters[i].attendedDays){
-						if(user.userEventParameters[i].attendedDays.length === 0){
-							user.userEventParameters[i].attendedDays.push({
+			// loop the userCourseParameters
+			for(var i in user.userCourseParameters){
+				if(user.userCourseParameters[i].courseId === attendedUser.courseId){
+					for(var j in user.userCourseParameters[i].attendedDays){
+						if(user.userCourseParameters[i].attendedDays.length === 0){
+							user.userCourseParameters[i].attendedDays.push({
 								date: attendedUser.date,
 								attended: attendedUser.attended
 							});
 							return user.save();
-						}else if(user.userEventParameters[i].attendedDays[j].date === attendedUser.date){
-							user.userEventParameters[i].attendedDays[j].attended = attendedUser.attended;
+						}else if(user.userCourseParameters[i].attendedDays[j].date === attendedUser.date){
+							user.userCourseParameters[i].attendedDays[j].attended = attendedUser.attended;
 							return user.save();
 						}
 					}
-					user.userEventParameters[i].attendedDays.push({
+					user.userCourseParameters[i].attendedDays.push({
 						date: attendedUser.date,
 						attended: attendedUser.attended
 					});
@@ -164,18 +164,18 @@ function confirmAttendance(attendedUser){
 				}
 
 			}
-			// loop the attendedEvents if the event and the date is the same remove the old one and update the attended with the new object
-			// for(var i in user.attendedEvents){
-			// 	if(user.attendedEvents[i].eventId === attendedUser.eventId && user.attendedEvents[i].date === attendedUser.date){
-			// 		user.attendedEvents.splice(i,1);
-			// 		user.attendedEvents.push({eventId: attendedUser.eventId, 
+			// loop the attendedCourses if the course and the date is the same remove the old one and update the attended with the new object
+			// for(var i in user.attendedCourses){
+			// 	if(user.attendedCourses[i].courseId === attendedUser.courseId && user.attendedCourses[i].date === attendedUser.date){
+			// 		user.attendedCourses.splice(i,1);
+			// 		user.attendedCourses.push({courseId: attendedUser.courseId, 
 			// 						  date: attendedUser.date, 
 			// 						  attended: attendedUser.attended
 			// 						});
 			// 		return user.save();
 			// 	}
 			// }
-			// user.attendedEvents.push({eventId: attendedUser.eventId, 
+			// user.attendedCourses.push({courseId: attendedUser.courseId, 
 			// 						  date: attendedUser.date, 
 			// 						  attended: attendedUser.attended
 			// 						});
@@ -186,15 +186,15 @@ function confirmAttendance(attendedUser){
 
 function makePayment(payment){
 	var userId = payment.userId;
-	var eventId = payment.eventId;
+	var courseId = payment.courseId;
 	var paymentDate = payment.paymentDate;
 	var paymentAmount = payment.paymentAmount;
 	return usersDB
 			.findById(userId)
 			.then(function(user){
-				for(var i in user.userEventParameters){
-					if(user.userEventParameters[i].eventId === eventId){
-						user.userEventParameters[i].payments.push({date: paymentDate, amount: paymentAmount});
+				for(var i in user.userCourseParameters){
+					if(user.userCourseParameters[i].courseId === courseId){
+						user.userCourseParameters[i].payments.push({date: paymentDate, amount: paymentAmount});
 						return user.save();
 					}
 				}
@@ -203,7 +203,7 @@ function makePayment(payment){
 	// 			.findById(userId)
 	// 			.then(function (user){
 	// 				user.payments.push(
-	// 							{eventId: payment.eventId,
+	// 							{courseId: payment.courseId,
 	// 							 paymentDate: payment.paymentDate,
 	// 							 paymentAmount: JSON.parse(payment.paymentAmount)});
 	// 				return user.save();
@@ -283,16 +283,16 @@ function loginUser(username, password){
 function getAllUsers(){
 	return usersDB
 				.find()
-				.populate('events')
-				.populate('registeredEventsList')
+				.populate('courses')
+				.populate('registeredCoursesList')
 				.exec();
 }
 
 function findUserById(userId){
 	return usersDB
 				.findById(userId)
-				.populate('events')
-				.populate('registeredEventsList')
+				.populate('courses')
+				.populate('registeredCoursesList')
 				.exec();
 }
 
@@ -300,54 +300,54 @@ function findUserByEmail(userEmail){
 	return usersDB.findOne({email: userEmail});
 }
 
-function addEventId(userId, eventId){
+function addCourseId(userId, courseId){
 	return findUserById(userId)
 		.then(function(user){
-			user.events.push(eventId);
+			user.courses.push(courseId);
 			return user.save();
 		});
 }
 
-function addEventToUserEventsList(userId, eventId){
+function addCourseToUserCoursesList(userId, courseId){
 	return findUserById(userId)
 				.then(function(user){
-					// this will be instead of registeredEventsList
-					var eventParams = {
-					 	eventId: eventId,
+					// this will be instead of registeredCoursesList
+					var courseParams = {
+					 	courseId: courseId,
 					 	discountType: '',
 					 	discountTag: '',
 					 	percentage: 1,
-					 	eventDays: [],
-					 	discountedEventPrice: 0,
+					 	courseDays: [],
+					 	discountedCoursePrice: 0,
 					 	freezeDays: [],
 					 	payments: [],
 					 	attendedDays: [],
 					 	feedbacks: []
 					};
-					user.userEventParameters.push(eventParams);
+					user.userCourseParameters.push(courseParams);
 					// ////////////
-					user.registeredEventsList.push(eventId);
+					user.registeredCoursesList.push(courseId);
 					return user.save();
 		});
 }
 
 
-function removeRegisteredEvent(userId, eventId){
+function removeRegisteredCourse(userId, courseId){
 	return usersDB
 		.findById(userId)
 		.then(function(user){
-			var index = user.registeredEventsList.indexOf(eventId);
-			user.registeredEventsList.splice(index, 1);
+			var index = user.registeredCoursesList.indexOf(courseId);
+			user.registeredCoursesList.splice(index, 1);
 			return user.save();
 		});
 }
 
-function removeEventFromList(userId, eventId){
+function removeCourseFromList(userId, courseId){
 	return usersDB
 		.findById(userId)
 		.then(function(user){
-			var index = user.events.indexOf(eventId);
-			user.events.splice(index, 1);
+			var index = user.courses.indexOf(courseId);
+			user.courses.splice(index, 1);
 			return user.save();
 		});
 }

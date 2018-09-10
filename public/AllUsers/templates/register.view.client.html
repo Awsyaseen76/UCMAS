@@ -1,5 +1,5 @@
-<!-- Navigation -->
-    <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark fixed-top">
+Navigation -->
+    <nav class="navbar fixed-top navbar-expand-lg fixed-top" style="background-color: gold;">
       <div class="container">
         <a class="navbar-brand" href="index.html"><img class="menu-logo" src="./img/logo/ucmas-logo.jpg"> </a>
         <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
@@ -11,10 +11,10 @@
               <a class="nav-link" href="#!/">Home</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#!/allEvents">Events</a>
+              <a class="nav-link" href="#!/allCourses">Courses</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link text-warning" href="#!/login" ng-show="!model.loggedUser">Login</a>
+              <a class="nav-link text-success" href="#!/login" ng-show="!model.loggedUser">Login</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="" ng-click="model.logout()" ng-show="model.loggedUser">Logout</a>
@@ -40,7 +40,7 @@
 	  <h1 class="display-3">Register with us:</h1>
 	  <hr class="my-4">
 		<form>
-			<div nd-show="model.error" class="text-danger">{{model.error}}</div>
+		  <div nd-show="model.error" class="text-danger">{{model.error}}</div>
 		  <div class="form-row">
 		  	<!-- <div class="form-group col-md-12">
 		      <label for="userName">Username:</label>
@@ -110,7 +110,7 @@
 		    	</div>
 		  </div>
 
-		  <div class="form-row">
+		  <!-- <div class="form-row">
 			    <div class="form-group col-md-4">
 			      <label for="medicalIssue">Any medical issues?</label>
 			      <select id="medicalIssue" class="form-control" ng-model="model.user.medical.medicalIssues">
@@ -122,7 +122,7 @@
 			      <label for="problemDetails">If yes please fill the details:</label>
 			      <input type="text" class="form-control" id="problemDetails" placeholder="Medical issue details..." ng-model="model.user.medical.problemDetails">
 			    </div>
-		  </div>
+		  </div> -->
 
 		  <div class="form-row">
 			  <div class="form-group col-md-12">
@@ -303,4 +303,4 @@
 	  	</fieldset>
 	  </form>
 	</div>
-</div> -->
+</div>

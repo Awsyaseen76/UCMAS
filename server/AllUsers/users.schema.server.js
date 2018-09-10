@@ -5,8 +5,9 @@ var mongoose = require('mongoose');
 var usersSchema = mongoose.Schema({
 	userType: {
 		type: String, 
-		default: 'user', 
-		enum:['user', 'maker', 'admin', 'superadmin']},
+		default: 'user' 
+		// enum:['user', 'center', 'admin', 'superadmin']},
+    },
 	password: String,
 	name:{
 		firstName: String,
@@ -16,20 +17,20 @@ var usersSchema = mongoose.Schema({
 	email: String,
 	profileImage: {
 		type: {},
-		default: {filename: "/img/profileImages/avatar.png"}
+		default: {filename: "./public/img/profileImages/avatar.png"}
 	},
-	events: [{type: mongoose.Schema.Types.ObjectId, ref: 'eventsDB'}],
-	registeredEventsList: [{type: mongoose.Schema.Types.ObjectId, ref:'eventsDB'}],
-	userEventParameters: [
+	courses: [{type: mongoose.Schema.Types.ObjectId, ref: 'coursesDB'}],
+	registeredCoursesList: [{type: mongoose.Schema.Types.ObjectId, ref:'coursesDB'}],
+	userCourseParameters: [
         {
             _id: false,
-            eventId: String,
+            courseId: String,
             discountType: String,
             discountTag: String,
             percentage: Number,
-            eventDays: [String],
-            discountedEventPrice: Number,
-            normalEventPrice: Number,
+            courseDays: [String],
+            discountedCoursePrice: Number,
+            normalCoursePrice: Number,
             freezeDays: [String],
             payments: [
             	{
@@ -49,7 +50,7 @@ var usersSchema = mongoose.Schema({
             	{
             		_id: false,
             		date: Date,
-            		eventName: String,
+            		courseName: String,
             		feedback: String,
                     userId: String,
                     approved: Boolean
@@ -66,10 +67,10 @@ var usersSchema = mongoose.Schema({
     DOB: Date,
     grade: String,
     school: String,
-    medical: {
-    	medicalIssues: String,
-    	problemDetails: String 
-    },
+    // medical: {
+    // 	medicalIssues: String,
+    // 	problemDetails: String 
+    // },
     contact:{
 	    father:{
 	    	name: String,
@@ -88,7 +89,7 @@ var usersSchema = mongoose.Schema({
     },
     address: String,
     payments: [],
-    attendedEvents: [],
+    attendedCourses: [],
     userFeedback: [],
     // totalOfPayments: [],
     notes: String,

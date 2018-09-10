@@ -1,6 +1,6 @@
 (function() {
 	angular
-		.module('UCMAS')
+		.module('UCMASjordan')
 		.controller('userProfileController', userProfileController);
 
 	function userProfileController(userService, loggedUser, $location, $sce, $route) {
@@ -11,23 +11,23 @@
 			model.loggedUser = loggedUser;
 			model.upcommingProgram = [];
 			model.userFeedbacks = [];
-			model.registeredEventsList = model.userProfile.registeredEventsList;
+			model.registeredCoursesList = model.userProfile.registeredCoursesList;
 			// get the upcomming daily program item
-			for(var i in model.userProfile.registeredEventsList){
+			for(var i in model.userProfile.registeredCoursesList){
 				inner: 
-				for(var e in model.userProfile.registeredEventsList[i].programDailyDetails){
+				for(var e in model.userProfile.registeredCoursesList[i].programDailyDetails){
 					if(new Date(e) >= new Date()){
 						// var upcome = {}
-						model.upcommingProgram.push({event: model.userProfile.registeredEventsList[i].name, 
+						model.upcommingProgram.push({course: model.userProfile.registeredCoursesList[i].name, 
 													 date: new Date(e),
-													 programDetails: model.userProfile.registeredEventsList[i].programDailyDetails[e]});
+													 programDetails: model.userProfile.registeredCoursesList[i].programDailyDetails[e]});
 						break inner;
 					}
 				}
 			}
-			for(var j in model.userProfile.userEventParameters){
-				for(var f in model.userProfile.userEventParameters[j].feedbacks){
-					model.userFeedbacks.push(model.userProfile.userEventParameters[j].feedbacks[f]);
+			for(var j in model.userProfile.userCourseParameters){
+				for(var f in model.userProfile.userCourseParameters[j].feedbacks){
+					model.userFeedbacks.push(model.userProfile.userCourseParameters[j].feedbacks[f]);
 				}
 			}
 		}
@@ -35,14 +35,14 @@
 
 
 		model.logout = logout;
-		model.removeRegisteredEvent = removeRegisteredEvent;
+		model.removeRegisteredCourse = removeRegisteredCourse;
 		model.totalPayments = totalPayments;
 		model.attendedDays = attendedDays;
 		model.trustedUrl = trustedUrl;
 		model.submitFeedback = submitFeedback;
 
-		function submitFeedback(eventId, eventName,feedbackText){
-			var feedbackObject = {userId: model.loggedUser._id, eventId: eventId, eventName: eventName, feedbackText: feedbackText};
+		function submitFeedback(courseId, courseName,feedbackText){
+			var feedbackObject = {userId: model.loggedUser._id, courseId: courseId, courseName: courseName, feedbackText: feedbackText};
 			userService
 				.submitFeedback(feedbackObject)
 				.then(function(result){
@@ -61,13 +61,13 @@
 			return $sce.trustAsResourceUrl(youtubeUrl);
 		}
 
-		function attendedDays(eventId){
+		function attendedDays(courseId){
 			var attended = 0;
 			var missed = 0;
-			for(var i in loggedUser.attendedEvents){
-				if(eventId === loggedUser.attendedEvents[i].eventId && loggedUser.attendedEvents[i].attended===true){
+			for(var i in loggedUser.attendedCourses){
+				if(courseId === loggedUser.attendedCourses[i].courseId && loggedUser.attendedCourses[i].attended===true){
 					attended+=1;
-				} else if(eventId === loggedUser.attendedEvents[i].eventId && loggedUser.attendedEvents[i].attended===false){
+				} else if(courseId === loggedUser.attendedCourses[i].courseId && loggedUser.attendedCourses[i].attended===false){
 					missed+=1;
 				}
 			}
@@ -76,15 +76,15 @@
 	
 
 
-		function totalPayments(eventId, eventPrice){
+		function totalPayments(courseId, coursePrice){
 			var totals = 0;
 			var balance = 0;
 			for(var i in loggedUser.payments){
-				if(eventId === loggedUser.payments[i].eventId){
+				if(courseId === loggedUser.payments[i].courseId){
 					totals+= JSON.parse(loggedUser.payments[i].paymentAmount)
 				}
 			}
-			balance = totals - eventPrice
+			balance = totals - coursePrice
 			return {totals: totals, balance: balance};
 		}
 
@@ -111,10 +111,10 @@
 
 
 
-		function removeRegisteredEvent(eventId){
+		function removeRegisteredCourse(courseId){
 			// var _userId = $routeParams.userId;
 			userService
-				.removeRegisteredEvent(loggedUser._id, eventId)
+				.removeRegisteredCourse(loggedUser._id, courseId)
 				.then(function(response){
 					$location.url('/profile');
 				});

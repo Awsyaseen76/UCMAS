@@ -1,6 +1,6 @@
 (function() {
 	angular
-		.module('UCMAS')
+		.module('UCMASjordan')
 		.controller('loginController', loginController);
 
 	function loginController(userService, $location) {

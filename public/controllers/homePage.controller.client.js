@@ -1,9 +1,9 @@
 (function(){
 	angular
-		.module('UCMAS')
+		.module('UCMASjordan')
 		.controller('homePageController', homePageController);
 
-	function homePageController(userService, $location, eventsService, $route, $interval){
+	function homePageController(userService, $location, coursesService, $route, $interval){
 		var model = this;
 		model.logout = logout;
 		model.getAllFeedbacks = getAllFeedbacks;
@@ -21,15 +21,15 @@
 					}
 				});
 
-			eventsService
-				.getAllEvents()
-				.then(function(events){
-					model.eventsList = events;
-					if(events){
+			coursesService
+				.getallCourses()
+				.then(function(courses){
+					model.coursesList = courses;
+					if(courses){
 						getTheFeedbacks();
-						for(var event in events){
-							if(events[event].special){
-								model.specialEvent = events[event];
+						for(var course in courses){
+							if(courses[course].special){
+								model.specialCourse = courses[course];
 								return;
 							}
 						}

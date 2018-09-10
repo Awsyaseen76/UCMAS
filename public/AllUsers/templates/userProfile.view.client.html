@@ -1,7 +1,7 @@
 
 
 <!-- Navigation -->
-    <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <nav class="navbar fixed-top navbar-expand-lg fixed-top" style="background-color: gold;">
       <div class="container">
         <a class="navbar-brand" href="index.html"><img class="menu-logo" src="./img/logo/ucmas-logo.jpg"> </a>
         <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
@@ -13,7 +13,7 @@
               <a class="nav-link" href="#!/">Home</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#!/allEvents">Events</a>
+              <a class="nav-link" href="#!/allCourses">Courses</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="#!/login" ng-show="!model.loggedUser">Login</a>
@@ -22,7 +22,7 @@
               <a class="nav-link" href="" ng-click="model.logout()" ng-show="model.loggedUser">Logout</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link text-warning" href="#!/profile" ng-show="model.loggedUser">Profile</a>
+              <a class="nav-link text-success" href="#!/profile" ng-show="model.loggedUser">Profile</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="#!/about">About</a>
@@ -113,8 +113,8 @@
 
 		<div class="row">
 			<div class="col-md-12">
-				<li class="list-group-item"> <b> Medical issues: </b>{{model.userProfile.medical.medicalIssues}}</li>
-				<li class="list-group-item"> <b> Medical details: </b>{{model.userProfile.medical.problemDetails}}</li>
+				<!-- <li class="list-group-item"> <b> Medical issues: </b>{{model.userProfile.medical.medicalIssues}}</li> -->
+				<!-- <li class="list-group-item"> <b> Medical details: </b>{{model.userProfile.medical.problemDetails}}</li> -->
 				<li class="list-group-item"> <b> Notes: </b> {{model.userProfile.notes}}</li>
 			</div>
 		</div>
@@ -123,7 +123,7 @@
 		<br><br>
 		<div class="row">
 			<div class="col-md-12">
-				<h4>Registered Events:</h4>
+				<h4>Registered Courses:</h4>
 					<hr>
 					<div class="container">
 
@@ -134,7 +134,7 @@
 					        <div class="col-md-12">
 					          <div class="card flex-md-row mb-4 box-shadow h-md-250">
 					            <div class="card-body d-flex flex-column align-items-start">
-					              <h3 class="d-inline-block mb-2 text-warning">{{program.event}}:</h3>
+					              <h3 class="d-inline-block mb-2 text-warning">{{program.course}}:</h3>
 					              <h5 class="mb-0">{{program.programDetails.title}}</h5>
 					              <div class="mb-1 text-muted">{{program.date | date}}</div>
 					              <p class="card-text mb-auto">
@@ -152,18 +152,18 @@
 
 
 						<div class="row">
-							<div class="card border-success col-xl-4 aws-margin10" ng-repeat='event in model.userProfile.registeredEventsList' style="max-width: 20rem;">
-							  <div class="card-header text-danger"><h3>{{event.name}}</h3></div>
+							<div class="card border-success col-xl-4 aws-margin10" ng-repeat='course in model.userProfile.registeredCoursesList' style="max-width: 20rem;">
+							  <div class="card-header text-danger"><h3>{{course.name}}</h3></div>
 							  <div class="card-body">
-							    <p class="card-title"><b>Category: </b>{{event.category}}</p>
-							    <p class="card-title"><b>Starting date: </b>{{event.startingDate | date}}</p>
-							    <p class="card-title"><b>Ending date: </b>{{event.expiryDate | date}}</p>
-							    <p class="card-title"><b>Payments: </b>{{model.totalPayments(event._id, event.price).totals | currency:"JOD "}}</p>
-							    <p class="card-title"><b>Balance: </b>{{model.totalPayments(event._id, event.price).balance | currency:"JOD "}}</p>
-							    <p class="card-title"><b>Attended Days: </b>{{model.attendedDays(event._id).attended}}</p>
-							    <p class="card-title"><b>Missed Days: </b>{{model.attendedDays(event._id).missed}}</p>
+							    <p class="card-title"><b>Level: </b>{{course.level}}</p>
+							    <p class="card-title"><b>Starting date: </b>{{course.startingDate | date}}</p>
+							    <p class="card-title"><b>Ending date: </b>{{course.expiryDate | date}}</p>
+							    <p class="card-title"><b>Payments: </b>{{model.totalPayments(course._id, course.price).totals | currency:"JOD "}}</p>
+							    <p class="card-title"><b>Balance: </b>{{model.totalPayments(course._id, course.price).balance | currency:"JOD "}}</p>
+							    <p class="card-title"><b>Attended Days: </b>{{model.attendedDays(course._id).attended}}</p>
+							    <p class="card-title"><b>Missed Days: </b>{{model.attendedDays(course._id).missed}}</p>
 							    
-							    <!-- <a href="" ng-click="model.removeRegisteredEvent(event._id)" class=" btn btn-default pull-right">Remove...</a> -->
+							    <!-- <a href="" ng-click="model.removeRegisteredCourse(course._id)" class=" btn btn-default pull-right">Remove...</a> -->
 							  </div>
 							</div>
 						</div>
@@ -176,15 +176,15 @@
 								<h3 class="text-success">Give us a feedback:</h3>
 							</div>
 							<div class="col-sm-6" style="margin: 5px;">
-								<select ng-model="selectedEvent" class="custom-select" ng-options="event.name for event in model.registeredEventsList">
-									<option value="" disabled >Select event...</option>
+								<select ng-model="selectedCourse" class="custom-select" ng-options="course.name for course in model.registeredCoursesList">
+									<option value="" disabled >Select course...</option>
 								</select>
 							</div>
 							<div class="col-sm-10" style="margin: 5px;">
 								<textarea name="feedback" class="form-control" ng-model="feedbackText"></textarea>
 							</div>
 							<div class="col-sm-4" style="margin: 5px;">
-								<a class="btn btn-success form-control" ng-click="model.submitFeedback(selectedEvent._id, selectedEvent.name, feedbackText)">Submit</a>
+								<a class="btn btn-success form-control" ng-click="model.submitFeedback(selectedCourse._id, selectedCourse.name, feedbackText)">Submit</a>
 							</div>
 							<div class="col-sm-12" style="margin-top: 50px;">
 								<h4 class="text-success">Your feedbacks:</h4>
@@ -192,14 +192,14 @@
 									  <thead>
 									    <tr>
 									      <th width="20%">Date</th>
-									      <th width="20%">Event name</th>
+									      <th width="20%">Course name</th>
 									      <th width="60%">Feedback</th>
 									    </tr>
 									  </thead>
 									  <tbody>
 									    <tr ng-repeat="feed in model.userFeedbacks">
 									      <td>{{feed.date | date}}</td>
-									      <td>{{feed.eventName}}</td>
+									      <td>{{feed.courseName}}</td>
 									      <td>{{feed.feedback}}</td>
 									    </tr>
 									  </tbody>

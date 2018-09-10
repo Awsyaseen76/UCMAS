@@ -1,6 +1,6 @@
 (function() {
 	angular
-		.module('UCMAS')
+		.module('UCMASjordan')
 		.service('userService', userService);
 
 	function userService($http) {
@@ -11,10 +11,10 @@
 		this.createUser = createUser;
 		this.checkUserLogin = checkUserLogin;
 		this.logout = logout;
-		this.isMaker = isMaker;
+		this.isCenter = isCenter;
 		this.isAdmin = isAdmin;
-		this.addEventToUserEventsList = addEventToUserEventsList;
-		this.removeRegisteredEvent = removeRegisteredEvent;
+		this.addCourseToUserCoursesList = addCourseToUserCoursesList;
+		this.removeRegisteredCourse = removeRegisteredCourse;
 		this.getAllUsers = getAllUsers;
 		this.forgetPassword = forgetPassword;
 		this.resetPassword = resetPassword;
@@ -22,7 +22,7 @@
 		this.makePayment = makePayment;
 		this.confirmAttendance = confirmAttendance;
 		this.submitFeedback = submitFeedback;
-		this.updateUserEventParameters = updateUserEventParameters;
+		this.updateUserCourseParameters = updateUserCourseParameters;
 		this.freezeMembership = freezeMembership;
 		this.removeFrozeDays = removeFrozeDays;
 		this.getAllFeedbacks = getAllFeedbacks;
@@ -44,8 +44,8 @@
 
 		function removeFrozeDays(ids){
 			var userId = ids.userId;
-			var originalEventId = ids.originalEventId;
-			return $http.delete('/api/user/removeFrozeDays/'+userId+'/'+originalEventId);
+			var originalCourseId = ids.originalCourseId;
+			return $http.delete('/api/user/removeFrozeDays/'+userId+'/'+originalCourseId);
 		}
 
 		function freezeMembership(freezeObject){
@@ -53,8 +53,8 @@
 			return $http.put(url, freezeObject);
 		}
 
-		function updateUserEventParameters(discount){
-			var url = '/api/user/updateUserEventParameters';
+		function updateUserCourseParameters(discount){
+			var url = '/api/user/updateUserCourseParameters';
 			return $http.put(url, discount);
 		}
 
@@ -64,12 +64,12 @@
 		}
 
 		function confirmAttendance(totalAttended){
-			var url = '/api/maker/confirmAttendance';
+			var url = '/api/center/confirmAttendance';
 			return $http.put(url, totalAttended);
 		}
 
 		function makePayment(payment){
-			var url = '/api/maker/makePayment';
+			var url = '/api/center/makePayment';
 			return $http.put(url, payment);
 		}
 
@@ -93,13 +93,13 @@
 			return $http.get('/api/user/getAllUsers');
 		}
 
-		function addEventToUserEventsList(event){
-			var url = '/api/addEventToUser';
-				return $http.post(url, event);
+		function addCourseToUserCoursesList(course){
+			var url = '/api/addCourseToUser';
+				return $http.post(url, course);
 		}
 
-		function removeRegisteredEvent(userId, eventId){
-				var url = '/api/removeEventFromUser/'+eventId;
+		function removeRegisteredCourse(userId, courseId){
+				var url = '/api/removeCourseFromUser/'+courseId;
 				return $http.delete(url);
 			}
 
@@ -171,9 +171,9 @@
 					});
 		}
 
-		function isMaker(){
+		function isCenter(){
 			return $http
-					.get('/api/isMaker')
+					.get('/api/isCenter')
 					.then(function(result){
 						return result.data;
 					});

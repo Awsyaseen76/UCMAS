@@ -1,6 +1,6 @@
 (function() {
 	angular
-		.module('UCMAS')
+		.module('UCMASjordan')
 		.controller('registerController', registerController);
 
 	function registerController(userService, $location, $rootScope) {
@@ -43,7 +43,8 @@
 							model.error = 'email already exist';
 							return;
 						}else{
-							return userService.createUser(user)
+							return userService
+								.createUser(user)
 								.then(function(result){
 									var matchedUser = result;
 									var userId = matchedUser._id;
@@ -52,8 +53,8 @@
 									if(matchedUser.userType === 'user'){
 										$location.url('/userProfile');
 										return;
-									}else if(matchedUser.userType === 'maker'){
-										$location.url('/makerProfile');
+									}else if(matchedUser.userType === 'center'){
+										$location.url('/centerProfile');
 										return;
 									}else if(matchedUser.userType === 'admin'){
 										$location.url('/adminPage');

@@ -2,7 +2,7 @@ module.exports = function(app) {
 
 
 var usersDB 		= require('./users.model.server.js');
-var eventsDB 		= require('../events/events.model.server.js');
+var coursesDB 		= require('../courses/courses.model.server.js');
 var passport 		= require('passport');
 var bcrypt   		= require('bcrypt-nodejs');
 var GoogleStrategy 	= require('passport-google-oauth').OAuth2Strategy;
@@ -27,7 +27,6 @@ var async			= require('async');
 	    clientSecret : process.env.GOOGLE_CLIENT_SECRET,
 	    callbackURL  : process.env.GOOGLE_CALLBACK_URL
 	};
-
 
 
 // AWS Configuration:
@@ -55,11 +54,11 @@ var async			= require('async');
 		// storage: storage, for the local storage
 		storage: multerS3({
 	        s3: s3,
-	        bucket: 'jordanevents',
+	        bucket: 'ucmasproject',
 	        key: function (req, file, cb) {
 	            // remove old image before upload new one
 	            var params = {
-	  					Bucket: "jordanevents", 
+	  					Bucket: "ucmasproject", 
 	  					Key: req.user.profileImage.key
 	 				};
 				s3.deleteObject(params, function(err, data) {
@@ -110,15 +109,15 @@ app.get('/api/user/findUserByEmail/:userEmail', findUserByEmail);
 app.post('/api/user/login', passport.authenticate('localUser'), loginUser);
 app.post('/api/user/', addNewUser);
 app.get('/api/checkUserLogin', checkUserLogin);
-app.get('/api/isMaker', isMaker);
+app.get('/api/isCenter', isCenter);
 app.get('/api/admin/isAdmin', checkAdmin, isAdmin);
 app.post('/api/logout', logout);
-app.post('/api/addEventToUser', addEventToUserEventsList);
-app.delete('/api/removeEventFromUser/:eventId', removeRegisteredEvent);
+app.post('/api/addCourseToUser', addCourseToUserCoursesList);
+app.delete('/api/removeCourseFromUser/:courseId', removeRegisteredCourse);
 
 // login with google
-app.get('/jordanEvents/auth/google', passport.authenticate('google', { scope : ['profile', 'email'] }));
-app.get('/jordanEvents/auth/google/callback',
+app.get('/ucmasJordan2018/auth/google', passport.authenticate('google', { scope : ['profile', 'email'] }));
+app.get('/ucmasJordan2018/auth/google/callback',
 passport.authenticate('google', {
     successRedirect: '/#!/profile',
     failureRedirect: '/#!/loginUser'
@@ -128,12 +127,12 @@ app.post('/api/userProfile/uploadProfilePic', upload.single('profilePicture'), u
 app.post('/api/forgetPassword/:email', forgetPassword);
 app.post('/api/resetPassword/:token', checkToken, resetPassword);
 app.put('/api/user/updateProfile', updateProfile);
-app.put('/api/maker/makePayment', makePayment);
-app.put('/api/maker/confirmAttendance', confirmAttendance);
+app.put('/api/center/makePayment', makePayment);
+app.put('/api/center/confirmAttendance', confirmAttendance);
 app.put('/api/user/submitFeedback', submitFeedback);
-app.put('/api/user/updateUserEventParameters', updateUserEventParameters);
+app.put('/api/user/updateUserCourseParameters', updateUserCourseParameters);
 app.put('/api/user/freezeMembership', freezeMembership);
-app.delete('/api/user/removeFrozeDays/:userId/:eventId', removeFrozeDays);
+app.delete('/api/user/removeFrozeDays/:userId/:courseId', removeFrozeDays);
 app.get('/api/user/getAllFeedbacks', getAllFeedbacks);
 app.put('/api/admin/updateFeedbackByAdmin', updateFeedbackByAdmin);
 
@@ -163,26 +162,24 @@ function getAllFeedbacks(req, res){
 		.then(function(users){
 			var feeds = [];
 			for(var i in users){
-				for(var j in users[i].userEventParameters){
-					if(users[i].userEventParameters[j].feedbacks && users[i].userEventParameters[j].feedbacks.length>0){
-						// console.log((users[i].userEventParameters[j].feedbacks));
-						for(var f in users[i].userEventParameters[j].feedbacks){
-							if(users[i].userEventParameters[j].feedbacks[f].feedback){
+				for(var j in users[i].userCourseParameters){
+					if(users[i].userCourseParameters[j].feedbacks && users[i].userCourseParameters[j].feedbacks.length>0){
+						// console.log((users[i].userCourseParameters[j].feedbacks));
+						for(var f in users[i].userCourseParameters[j].feedbacks){
+							if(users[i].userCourseParameters[j].feedbacks[f].feedback){
 								var temp = {};
-								temp.feedback = users[i].userEventParameters[j].feedbacks[f].feedback;
+								temp.feedback = users[i].userCourseParameters[j].feedbacks[f].feedback;
 								temp.userName = users[i].name.firstName+" "+users[i].name.lastName;
-								temp.eventName = users[i].userEventParameters[j].feedbacks[f].eventName;
-								temp.date = users[i].userEventParameters[j].feedbacks[f].date;
-								temp.approved = users[i].userEventParameters[j].feedbacks[f].approved;
-								temp.userId = users[i].userEventParameters[j].feedbacks[f].userId;
+								temp.courseName = users[i].userCourseParameters[j].feedbacks[f].courseName;
+								temp.date = users[i].userCourseParameters[j].feedbacks[f].date;
+								temp.approved = users[i].userCourseParameters[j].feedbacks[f].approved;
+								temp.userId = users[i].userCourseParameters[j].feedbacks[f].userId;
 								feeds.push(temp);
 							}
 						}
 					}
 				}	
 			}
-			// console.log('the feeds are:');
-			// console.log(feeds);
 			res.send(feeds);
 		});
 }
@@ -193,7 +190,7 @@ function removeFrozeDays(req, res){
 	// var ids = req.params;
 	var ids = {};
 	ids.userId = req.params.userId;
-	ids.originalEventId = req.params.originalEventId;
+	ids.originalCourseId = req.params.originalCourseId;
 	// console.log(ids);
 	usersDB
 		.removeFrozeDays(ids)
@@ -213,10 +210,10 @@ function freezeMembership(req, res){
 }
 
 
-function updateUserEventParameters(req, res){
+function updateUserCourseParameters(req, res){
 	var discount = req.body;
 	usersDB
-		.updateUserEventParameters(discount)
+		.updateUserCourseParameters(discount)
 		.then(function (result){
 			res.send(result);
 		});
@@ -283,6 +280,7 @@ function updateProfile(req, res){
 function checkToken(req, res, next){
 	var token = req.params.token;
 	var password = req.body.password;
+	var emailAddress = process.env.GMAIL_ACCOUNT;
 	// resetPassword(req, res, password);
 
 	usersDB
@@ -296,13 +294,13 @@ function checkToken(req, res, next){
 					.then(function(result){
 						// send email to reset password
 						var mailOptions = {
-							from: 'jordanevents2018@gmail.com',
+							from: emailAddress,
 							to: result.email,
 							subject: 'Password changed...',
 							html: 
 								'<div align="center" style="background-color: beige">'+
 										'<br><br>'+
-										'<img src="cid:jordanEventsLogo001" style="width: 200px; height: 200px;"/>'+
+										'<img src="cid:UCMASJordanLogo001" style="width: 200px; height: 200px;"/>'+
 										'<br>'+
 										'<p style="color: indianred; font-size: 2em;">Welcome '+ result.name.firstName + '!'+'</p>'+
 										'<p style="font-size: 1.5em;" > You are receiving this because you (or someone else) have requested the reset of the password for your account.</p>'+
@@ -313,15 +311,15 @@ function checkToken(req, res, next){
 										'<br>'+ 
 										'<p style="font-size: 1.5em;"> http://' + req.headers.host + '/#!/login'+'</p>'+
 										'<br>'+
-										'<p style="font-size: 1.5em;">Jordan Events Team</p>'+
+										'<p style="font-size: 1.5em;">UCMAS Jordan Team</p>'+
 										'<br>'+
 										'<p> --   </p>'+
 								'</div>',
 								
 								attachments: [{
-						        	filename: 'jordanEvents.jpg',
-						        	path: __dirname+'/../../public/img/logo/jordanEvents.jpg',
-						        	cid: 'jordanEventsLogo001' 
+						        	filename: 'ucmas-logo-sqr.jpg',
+						        	path: __dirname+'/../../public/img/logo/ucmas-logo-sqr.jpg',
+						        	cid: 'UCMASJordanLogo001' 
 						    	}]
 							
 						};
@@ -363,6 +361,8 @@ function resetPassword(req, res, user){
 
 function forgetPassword(req, res){
 	var userEmail = req.params.email;
+	var emailAddress = process.env.GMAIL_ACCOUNT;
+
 	crypto.randomBytes(20, function(err, buf) {
         var token = buf.toString('hex');
         usersDB
@@ -370,13 +370,13 @@ function forgetPassword(req, res){
         	.then(function(user){
 				// send email to reset password
 				var mailOptions = {
-					from: 'jordanevents2018@gmail.com',
+					from: emailAddress,
 					to: userEmail,
 					subject: 'Password reset...',
 					html: 
 						'<div align="center" style="background-color: beige">'+
 								'<br><br>'+
-								'<img src="cid:jordanEventsLogo001" style="width: 200px; height: 200px;"/>'+
+								'<img src="cid:UCMASJordanLogo001" style="width: 200px; height: 200px;"/>'+
 								'<br>'+
 								'<p style="color: indianred; font-size: 2em;">Welcome '+ user.name.firstName + '!'+'</p>'+
 								'<p style="font-size: 1.5em;" > You are receiving this because you (or someone else) have requested the reset of the password for your account.</p>'+
@@ -387,15 +387,15 @@ function forgetPassword(req, res){
 								'<br>'+
 								'<p style="font-size: 1.5em;">If you did not request this, please ignore this email and your password will remain unchanged. </p>'+
 								'<br>'+
-								'<p style="font-size: 1.5em;">Jordan Events Team</p>'+
+								'<p style="font-size: 1.5em;">UCMAS Jordan Team</p>'+
 								'<br>'+
 								'<p> --   </p>'+
 						'</div>',
 						
 						attachments: [{
-				        	filename: 'jordanEvents.jpg',
-				        	path: __dirname+'/../../public/img/logo/jordanEvents.jpg',
-				        	cid: 'jordanEventsLogo001' 
+				        	filename: 'ucmas-logo-sqr.jpg',
+				        	path: __dirname+'/../../public/img/logo/ucmas-logo-sqr.jpg',
+				        	cid: 'UCMASJordanLogo001' 
 				    	}]
 					
 				};
@@ -481,7 +481,7 @@ function userStrategy(username, password, done) {
 				if(!user){
 					return done(null, false);
 				} else if(user && !bcrypt.compareSync(password, user.password)){
-					return done(null, false)
+					return done(null, false);
 				} else if(user && bcrypt.compareSync(password, user.password)){
 					return done(null, user);
 				} 
@@ -608,6 +608,8 @@ function getAllUsers(req, res) {
 
 function addNewUser(req, res){
 	var newUser = req.body;
+	var emailAddress = process.env.GMAIL_ACCOUNT;
+	
 	newUser.password = bcrypt.hashSync(newUser.password);
 	usersDB
 		.addNewUser(newUser)
@@ -617,27 +619,27 @@ function addNewUser(req, res){
 					return err;
 				}else{
 					var mailOptions = {
-						from: 'jordanevents2018@gmail.com',
+						from: emailAddress,
 						to: addedUser.email,
 						subject: 'Registration complete',
 						html: 
 							'<div align="center" style="background-color: beige">'+
 									'<br><br>'+
-									'<img src="cid:jordanEventsLogo001" style="width: 200px; height: 200px;"/>'+
+									'<img src="cid:UCMASJordanLogo001" style="width: 200px; height: 200px;"/>'+
 									'<br>'+
 									'<h1 style="color: indianred; font-size: 6em;">Welcome '+ addedUser.name.firstName + '!'+'</h1>'+
 									'<h3 style="font-size: 3em;" >Your registration has been completed...</h3>'+
 									'<br>'+
-									'<p style="font-size: 2em;">You can now enjouy our services by logging in to <a href="http://jordanevents.herokuapp.com">our site</a> and register for deferents activities</p>'+
+									'<p style="font-size: 2em;">You can now enjouy our services by logging in to <a href="http://ucmasjordan.herokuapp.com">our site</a> and enjoy our services.</p>'+
 									'<br>'+
-									'<h3 style="font-size: 3em;">Jordan Events Team</h3>'+
+									'<h3 style="font-size: 3em;">UCMAS Jordan Team</h3>'+
 									'<br><br><br><br><br>'+
 							'</div>',
 							
 							attachments: [{
-					        	filename: 'jordanEvents.jpg',
-					        	path: __dirname+'/../../public/img/logo/jordanEvents.jpg',
-					        	cid: 'jordanEventsLogo001' 
+					        	filename: 'ucmas-logo-sqr.jpg',
+					        	path: __dirname+'/../../public/img/logo/ucmas-logo-sqr.jpg',
+					        	cid: 'UCMASJordanLogo001' 
 					    	}]
 						
 						};
@@ -662,8 +664,8 @@ function checkUserLogin(req, res){
 	res.send(req.isAuthenticated()? req.user : null);
 }
 
-function isMaker(req, res){
-	res.send(req.isAuthenticated() && req.user.userType === 'maker' ? req.user : null);
+function isCenter(req, res){
+	res.send(req.isAuthenticated() && req.user.userType === 'center' ? req.user : null);
 }
 
 function isAdmin(req, res){
@@ -680,14 +682,14 @@ function checkAdmin(req, res, next){
 	}
 }
 
-function addEventToUserEventsList(req, res){
+function addCourseToUserCoursesList(req, res){
 	var userId = req.user._id;
-	var event = req.body;
+	var course = req.body;
 	usersDB
-		.addEventToUserEventsList(userId, event._id)
+		.addCourseToUserCoursesList(userId, course._id)
 		.then(function(user){
-			eventsDB
-				.addMemberToEvent(event._id, userId)
+			coursesDB
+				.addMemberToCourse(course._id, userId)
 				.then(function (result){
 					console.log(result);
 				});
@@ -695,11 +697,11 @@ function addEventToUserEventsList(req, res){
 		});
 }
 
-function removeRegisteredEvent(req, res){
+function removeRegisteredCourse(req, res){
 	var userId = req.user._id;
-	var eventId = req.params.eventId;
+	var courseId = req.params.courseId;
 	usersDB
-		.removeRegisteredEvent(userId, eventId)
+		.removeRegisteredCourse(userId, courseId)
 		.then(function(status){
 			res.send(status);
 		});

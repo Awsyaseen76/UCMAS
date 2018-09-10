@@ -1,4 +1,4 @@
 (function() {
 	angular
-		.module('UCMAS', ['ngRoute']);
+		.module('UCMASjordan', ['ngRoute']);
 })();

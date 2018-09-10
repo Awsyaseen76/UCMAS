@@ -1,6 +1,6 @@
 (function() {
 	angular
-		.module('UCMAS')
+		.module('UCMASjordan')
 		.config(configuration);
 
 	function configuration($routeProvider) {
@@ -11,9 +11,9 @@
 				controller: 'homePageController',
 				controllerAs: 'model'
 			})
-			.when('/allLevels', {
-				templateUrl: 'levels/templates/allLevels.view.client.html',
-				controller: 'allLevelsController',
+			.when('/allCourses', {
+				templateUrl: 'courses/templates/allCourses.view.client.html',
+				controller: 'allCoursesController',
 				controllerAs: 'model'
 			})
 
@@ -64,21 +64,21 @@
 				}
 			})
 
-			.when('/teacherProfile', {
-				templateUrl: 'AllUsers/templates/teacherProfile.view.client.html',
-				controller: 'teacherProfileController',
+			.when('/centerProfile', {
+				templateUrl: 'AllUsers/templates/centerProfile.view.client.html',
+				controller: 'centerProfileController',
 				controllerAs: 'model',
 				resolve: {
-					loggedTeacher: isTeacher
+					loggedCenter: isCenter
 				}
 			})
 
-			.when('/updateTeacherProfile', {
-				templateUrl:'AllUsers/templates/editTeacherProfile.view.client.html',
-				controller: 'teacherProfileController',
+			.when('/updateCenterProfile', {
+				templateUrl:'AllUsers/templates/editCenterProfile.view.client.html',
+				controller: 'centerProfileController',
 				controllerAs: 'model',
 				resolve:{
-					loggedTeacher: isTeacher
+					loggedCenter: isCenter
 				}
 			})
 
@@ -93,57 +93,57 @@
 
 			})
 			
-			.when('/allLevels/:levelId',{
-				templateUrl: 'levels/templates/levelDetails.view.client.html',
-				controller: 'levelDetailsController',
+			.when('/allCourses/:courseId',{
+				templateUrl: 'courses/templates/courseDetails.view.client.html',
+				controller: 'courseDetailsController',
 				controllerAs: 'model'
 			})
 			
 
-			.when('/teacherProfile/levelsList', {
-				templateUrl:  'AllUsers/templates/teacherLevelsList.view.client.html',
-				controller:   'teacherLevelsListController',
+			.when('/centerProfile/coursesList', {
+				templateUrl:  'AllUsers/templates/centerCoursesList.view.client.html',
+				controller:   'centerCoursesListController',
 				controllerAs: 'model',
 				resolve: {
-					loggedTeacher: isTeacher
+					loggedCenter: isCenter
 				}
 			})
 
 
-			.when('/teacherProfile/newLevel', {
-				templateUrl: 'AllUsers/templates/teacherNewLevel.view.client.html',
-				controller: 'teacherNewLevelController',
+			.when('/centerProfile/newCourse', {
+				templateUrl: 'AllUsers/templates/centerNewCourse.view.client.html',
+				controller: 'centerNewCourseController',
 				controllerAs: 'model',
 				resolve: {
-					loggedTeacher: isTeacher
+					loggedCenter: isCenter
 				}
 			})
 
-			// .when('/teacherProfile/reNewLevel/:levelId', {
-			// 	templateUrl: 'AllUsers/templates/teacherReNewLevel.view.client.html',
-			// 	controller: 'teacherReNewLevelController',
-			// 	controllerAs: 'model',
-			// 	resolve: {
-			// 		loggedTeacher: isTeacher
-			// 	}
-			// })
-
-			.when('/teacherProfile/editLevel', {
-				templateUrl: 'AllUsers/templates/teacherEditLevel.view.client.html',
-				controller: 'teacherEditLevelController',
+			.when('/centerProfile/reNewCourse/:courseId', {
+				templateUrl: 'AllUsers/templates/centerReNewCourse.view.client.html',
+				controller: 'centerReNewCourseController',
 				controllerAs: 'model',
 				resolve: {
-					loggedTeacher: isTeacher
+					loggedCenter: isCenter
+				}
+			})
+
+			.when('/centerProfile/editCourse', {
+				templateUrl: 'AllUsers/templates/centerEditCourse.view.client.html',
+				controller: 'centerEditCourseController',
+				controllerAs: 'model',
+				resolve: {
+					loggedCenter: isCenter
 				}
 			})
 
 
-			.when('/teacherProfile/teacherLevelDetails/:levelId', {
-				templateUrl: 'levels/templates/teacherLevelDetails.view.client.html',
-				controller: 'teacherLevelDetails',
+			.when('/centerProfile/centerCourseDetails/:courseId', {
+				templateUrl: 'courses/templates/centerCourseDetails.view.client.html',
+				controller: 'centerCourseDetails',
 				controllerAs: 'model',
 				resolve: {
-					loggedTeacher: isTeacher
+					loggedCenter: isCenter
 				}
 			})
 
@@ -175,16 +175,16 @@
 		return deferred.promise;
 	}
 
-	function isTeacher(userService, $q, $location){
+	function isCenter(userService, $q, $location){
 		var deferred = $q.defer();
 		userService
-			.isTeacher()
-			.then(function(teacher){
-				if(teacher === null){
+			.isCenter()
+			.then(function(center){
+				if(center === null){
 					deferred.reject();
 					$location.url('/login');
 				} else{
-					deferred.resolve(teacher);
+					deferred.resolve(center);
 				}
 			});
 		return deferred.promise;
@@ -214,9 +214,9 @@
 					deferred.resolve(user);
 					$location.url('/userProfile');
 					return deferred.promise;
-				} else if(user.userType === 'teacher'){
+				} else if(user.userType === 'center'){
 					deferred.resolve(user);
-					$location.url('/teacherProfile');
+					$location.url('/centerProfile');
 					return deferred.promise;
 				}else if(user.userType === 'admin'){
 					deferred.resolve(user);

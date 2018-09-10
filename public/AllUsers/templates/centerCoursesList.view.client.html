@@ -1,0 +1,78 @@
+
+<!-- Navigation -->
+    <nav class="navbar fixed-top navbar-expand-lg fixed-top" style="background-color: gold;">
+      <div class="container">
+        <a class="navbar-brand" href="index.html"><img class="menu-logo" src="./img/logo/ucmas-logo.jpg"> </a>
+        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="#!/">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#!/allCourses">Courses</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#!/login" ng-show="!model.loggedCenter">Login</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="" ng-click="model.logout()" ng-show="model.loggedCenter">Logout</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-success" href="#!/profile" ng-show="model.loggedCenter">Profile</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#!/about">About</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#!/contact">Contact</a>
+            </li>
+            
+           
+            
+          </ul>
+        </div>
+      </div>
+    </nav>
+<!-- /Navigation -->
+
+
+
+
+<div class="container aws-margin10">
+<!-- 	<ng-include 
+		src="'../../views/htmlComponents/coursesListComponent/centerCoursesList-component.view.client.html'">
+	</ng-include> -->
+
+	<h2 ng-cloak>Course Center Name: {{model.loggedCenter.name.firstName}} {{model.loggedCenter.name.middleName}} {{model.loggedCenter.name.lastName}}</h2>
+	<h4>Courses List: </h4>
+
+	<table id="t01">
+	  <tr>
+	    <th width="30%" class="text-center">Name</th>
+	    <th width="10%" class="text-center">Level</th> 
+	    <th width="15%" class="text-center">Created</th>
+	    <th width="10%" class="text-center">Members</th>
+	    <th width="10%" class="text-center">Edit</th>
+	    <!-- <th>Remove</th> -->
+	    <th width="10%" class="text-center">Re-create</th>
+	    <th width="15%" class="text-center">Details</th>
+
+
+	  </tr>
+	  <tr ng-repeat="course in model.coursesList">
+	    <td class="text-center">{{course.name}}</td>
+	    <td class="text-center">{{course.level}}</td>
+	    <td class="text-center">{{course.created | date}}</td>
+	    <td class="text-center">{{course.registeredMembers.length}}</td>
+	    <td class="text-center"><a href="#!/centerProfile/editCourse"><span class="fa fa-pencil-square-o" aria-hidden="true"></span></a></td>
+	    <!-- <td><a href="" ><span class="fa fa-trash-o" aria-hidden="true"></span></a></td> -->
+	    <td><a href="#!/centerProfile/reNewCourse/{{course._id}}">ReNewCourse</a></td>
+	    
+	    <td class="text-center"><a href="#!/centerProfile/centerCourseDetails/{{course._id}}" class=" btn btn-default pull-right">More details...</a></td>
+	  </tr>
+	</table>
+
+</div>

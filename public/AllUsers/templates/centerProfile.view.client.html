@@ -1,0 +1,82 @@
+
+
+
+<!-- Navigation -->
+    <nav class="navbar fixed-top navbar-expand-lg fixed-top" style="background-color: gold;">
+      <div class="container">
+        <a class="navbar-brand" href="index.html"><img class="menu-logo" src="./img/logo/ucmas-logo.jpg"> </a>
+        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="#!/">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#!/allCourses">Courses</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#!/login" ng-show="!model.loggedCenter">Login</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="" ng-click="model.logout()" ng-show="model.loggedCenter">Logout</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-success" href="#!/profile" ng-show="model.loggedCenter">Profile</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#!/about">About</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#!/contact">Contact</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+<!-- /Navigation -->
+
+
+
+<div class="container aws-margin10">	
+  <div>
+    <!-- <img src='/img/profileImages/avatar.png'> -->
+		<h3 class="text-danger">Center Profile:</h3>
+		<hr>
+		<h5>Name: {{model.centerProfile.name.firstName}} {{model.centerProfile.name.middleName}} {{model.centerProfile.name.lastName}}</h5>
+		<h5>Email: {{model.centerProfile.email}}</h5>
+		<h5>Phone 1: {{model.centerProfile.contact.phone1}}</h5>
+    <h5>Phone 2: {{model.centerProfile.contact.phone2}}</h5>
+    <h5>Emergency Contact Name: {{model.centerProfile.contact.emergency.name}}</h5>
+    <h5>Emergency Phone number: {{model.centerProfile.contact.emergency.phone}}</h5>
+    <h5>Notes: {{model.centerProfile.notes}}</h5>
+
+	</div>
+	<br>
+	<div>
+		<hr>
+		<!-- <a class="btn btn-primary" href="#!/centerProfile/coursesList">Courses List</a> -->
+		<a class="btn btn-primary" href="#!/centerProfile/newCourse">New Course</a>
+		<a class="btn btn-primary" href="#!/centerProfile/editCourse">Edit Course</a>
+		<a class="btn btn-primary" href="#!/centerProfile/coursesList">Courses List</a>
+    <a href="#!/updateCenterProfile" class="btn btn-warning">Edit profile</a>
+
+
+	</div>
+	<br>
+	<h4>Courses:</h4>
+	<hr>
+	<div class="container">
+		<div class="row">
+			<div class="card border-success col-xl-4 aws-margin10" ng-repeat='course in model.centerProfile.courses' style="max-width: 20rem;">
+			  <div class="card-header text-danger"><h3>{{course.name}}</h3></div>
+			  <div class="card-body">
+			    <h5 class="card-title">Level: {{course.level}}</h5>
+			    <p class="card-text">Details: {{course.details}}</p>
+			    <!-- <a href="" ng-click="model.removeRegisteredCourse(model.userProfile._id, course._id)" class=" btn btn-default pull-right">Remove...</a> -->
+			  </div>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,6 +1,6 @@
 (function() {
 	angular
-		.module('UCMAS')
+		.module('UCMASjordan')
 		.controller('updateUserProfile', updateUserProfile);
 
 	function updateUserProfile(userService, loggedUser, $location) {
@@ -14,7 +14,7 @@
 		init();
 
 		model.logout = logout;
-		model.removeRegisteredEvent = removeRegisteredEvent;
+		model.removeRegisteredCourse = removeRegisteredCourse;
 		model.updateProfile = updateProfile;
 		// model.DOB = new Date(loggedUser.DOB);
 
@@ -23,7 +23,7 @@
 				.updateProfile(updatedUserProfile)
 				.then(function(result){
 					console.log('Profile Updated');
-				})
+				});
 				$location.url('/profile');
 		}
 
@@ -49,10 +49,10 @@
 
 
 
-		function removeRegisteredEvent(eventId){
+		function removeRegisteredCourse(courseId){
 			// var _userId = $routeParams.userId;
 			userService
-				.removeRegisteredEvent(loggedUser._id, eventId)
+				.removeRegisteredCourse(loggedUser._id, courseId)
 				.then(function(response){
 					$location.url('/profile');
 				});

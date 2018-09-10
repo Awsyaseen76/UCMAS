@@ -1,23 +1,23 @@
 (function() {
 	angular
-		.module('UCMAS')
+		.module('UCMASjordan')
 		.controller('adminController', adminController);
 
-	function adminController(userService, eventsService, loggedAdmin, $location) {
+	function adminController(userService, coursesService, loggedAdmin, $location) {
 		var model = this;
 
 		function init() {
 			model.loggedAdmin = loggedAdmin;
 			model.adminPage = loggedAdmin;
 			model.users = null;
-			model.events = null;
+			model.courses = null;
 		}
 		init();
 
 		model.logout = logout;
 		model.getAllUsers = getAllUsers;
-		model.getAllEvents = getAllEvents;
-		model.updateEventByAdmin = updateEventByAdmin;
+		model.getallCourses = getallCourses;
+		model.updateCourseByAdmin = updateCourseByAdmin;
 		model.getAllFeedbacks = getAllFeedbacks;
 		model.updateFeedbackByAdmin = updateFeedbackByAdmin;
 
@@ -36,7 +36,7 @@
 		}
 
 		function getAllUsers(){
-			model.events = null;
+			model.courses = null;
 			return userService
 				.getAllUsers()
 				.then(function (users){
@@ -46,21 +46,21 @@
 				});
 		}
 
-		function getAllEvents(){
+		function getallCourses(){
 			model.users = null;
-			eventsService
-					.getAllEvents()
-					.then(function(events){
-						if(events){
-							model.events = events;	
+			coursesService
+					.getallCourses()
+					.then(function(courses){
+						if(courses){
+							model.courses = courses;	
 						}
 					});
 		}
 
-		function updateEventByAdmin(event){
-			eventsService
-					.updateEventByAdmin(event)
-					.then(getAllEvents);
+		function updateCourseByAdmin(course){
+			coursesService
+					.updateCourseByAdmin(course)
+					.then(getallCourses);
 		}
 
 
