@@ -20,7 +20,7 @@ create the bone of the project:
 	[x] GOOGLE_CALLBACK_URL
 	[x] AWSAccessKeyId
 	[x] AWSSecretKey
-	Aws buckets
+	[x] Aws buckets
 	mapboxAccessToken
 
 Admin duty:
