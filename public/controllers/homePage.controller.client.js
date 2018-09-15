@@ -1,6 +1,6 @@
 (function(){
 	angular
-		.module('UCMASjordan')
+		.module("UCMASjordan")
 		.controller('homePageController', homePageController);
 
 	function homePageController(userService, $location, coursesService, $route, $interval){

@@ -1,6 +1,6 @@
 (function() {
 	angular
-		.module('UCMASjordan')
+		.module("UCMASjordan")
 		.config(configuration);
 
 	function configuration($routeProvider) {

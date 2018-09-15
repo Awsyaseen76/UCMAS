@@ -3,7 +3,7 @@
 module.exports = function(passport) {
 
     // load all the things we need
-    var usersDB             = require('./AllUsers/users.model.server.js');
+    var usersDB = require('./AllUsers/users.model.server.js');
 
     passport.serializeUser(serializeUser);
     passport.deserializeUser(deserializeUser);

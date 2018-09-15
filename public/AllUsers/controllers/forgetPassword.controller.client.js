@@ -1,6 +1,6 @@
 (function() {
 	angular
-		.module('UCMASjordan')
+		.module("UCMASjordan")
 		.controller('forgetPasswordController', forgetPasswordController);
 
 	function forgetPasswordController(userService, $location) {

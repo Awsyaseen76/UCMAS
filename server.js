@@ -29,7 +29,6 @@ app.use(cookieParser());
 app.use(passport.initialize());
 app.use(passport.session());
 
-// to be changed
 require('./server/AllUsers/users.service.server')(app);
 require('./server/courses/courses.service.server')(app);
 require('./server/databse.js');
@@ -37,7 +36,7 @@ require('./server/databse.js');
 
 require('./server/passport.js')(passport);
 
-
+console.log(port);
 app.listen(port, function() {
 	console.log('UCMAS connected to: '+port);
 });
