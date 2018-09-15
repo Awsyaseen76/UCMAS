@@ -1,6 +1,6 @@
 (function() {
 	angular
-		.module("UCMASjordan")
+		.module("ucmasJordan")
 		.controller('registerController', registerController);
 
 	function registerController(userService, $location, $rootScope) {

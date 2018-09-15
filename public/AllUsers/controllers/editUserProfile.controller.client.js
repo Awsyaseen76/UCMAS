@@ -1,6 +1,6 @@
 (function() {
 	angular
-		.module("UCMASjordan")
+		.module("ucmasJordan")
 		.controller('updateUserProfile', updateUserProfile);
 
 	function updateUserProfile(userService, loggedUser, $location) {

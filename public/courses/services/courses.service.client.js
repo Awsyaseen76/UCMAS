@@ -1,6 +1,6 @@
 (function() {
 	angular
-		.module("UCMASjordan")
+		.module("ucmasJordan")
 		.service('coursesService', coursesService);
 
 	function coursesService($http) {

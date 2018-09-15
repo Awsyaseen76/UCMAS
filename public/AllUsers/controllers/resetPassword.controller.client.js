@@ -1,6 +1,6 @@
 (function() {
 	angular
-		.module("UCMASjordan")
+		.module("ucmasJordan")
 		.controller('resetPasswordController', resetPasswordController);
 
 	function resetPasswordController(userService, $location, $routeParams) {

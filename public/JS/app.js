@@ -1,4 +1,4 @@
 (function() {
 	angular
-		.module("UCMASjordan", ["ngRouste"]);
+		.module("ucmasJordan", ["ngRouste"]);
 })();

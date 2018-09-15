@@ -1,6 +1,6 @@
 (function(){
 	angular
-		.module("UCMASjordan")
+		.module("ucmasJordan")
 		.controller('centerNewCourseController', centerNewCourseController);
 
 		function centerNewCourseController($location, coursesService, loggedCenter, userService){
