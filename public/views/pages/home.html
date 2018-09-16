@@ -95,8 +95,9 @@
     <div class="container">
 
       <br><br>
+      <h1>{{model.test}}</h1>
       <!-- Special course -->
-      <div class="row" ng-show="model.specialCourse">
+      <!-- <div class="row" ng-show="model.specialCourse">
         <div class="col-lg-6">
           <img class="img-fluid rounded mb-4" ng-src="{{model.specialCourse.images.img750x450}}" alt="">
         </div>
@@ -106,13 +107,13 @@
           <p ng-cloak>{{model.specialCourse.details}}</p>
           <a href="#!/allCourses/{{model.specialCourse._id}}">More details...</a>
         </div>
-      </div>
+      </div> -->
       <!-- /Special course -->
     
     <br><br><br>
 
       <!-- Available courses -->
-      <h2>Available courses</h2>
+      <!-- <h2>Available courses</h2>
       <div class="row">
         <div class="col-lg-4 mb-4" ng-repeat="course in model.coursesList | filter:{approved: true}">
           <div class="card h-100 text-center">
@@ -128,17 +129,16 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
       
 
       <!-- Dummy course -->
-      <div class="row">
+      <!-- <div class="row">
         <div class="col-lg-4 mb-4">
           <div class="card h-100 text-center">
             <img class="card-img-top" ng-src="../../img/elementaryb.jpg" alt="elementaryb">
             <div class="card-body">
               <h4 class="card-title">Elementary B course</h4>
-              <!-- <h6 class="card-subtitle mb-2 text-muted" ng-cloak>{{course.level}}</h6> -->
               <p class="card-text">Where: Khalda</p>
               <p class="card-text" ng-cloak>Day: Saturday</p>
               <p class="card-text" ng-cloak>Time: 09-11 AM</p>
@@ -148,7 +148,7 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
       <!-- /Available Courses -->
 
       <br>
